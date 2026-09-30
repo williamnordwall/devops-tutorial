@@ -1,0 +1,25 @@
+name: Trivy security scan
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan dependencies and secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.3
+
+      - name: Scan for dependency vulnerabilities
+        run: trivy fs --scanners vuln --exit-code 1 .
+
+      - name: Scan for secrets
+        run: trivy fs --scanners secret --exit-code 1 .
