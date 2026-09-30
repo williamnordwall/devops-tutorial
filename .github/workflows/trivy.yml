@@ -22,4 +22,5 @@ jobs:
         run: trivy fs --scanners vuln --exit-code 1 .
 
       - name: Scan for secrets
+        if: always()
         run: trivy fs --scanners secret --exit-code 1 .
